@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CheckDigit
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int i = GetCheckDigit(288125);
+            Console.Write(i);
+        }
+        public static int GetCheckDigit(int p_number)
+        {
+            int functionReturnValue = 0;
+            int w_int = 0;
+            int w_int2 = 0;
+            char[] w_char = null;
+            int w_mod = 0;
+            int w_ix = 0;
+            int w_weight = 0;
+            int w_total = 0;
+
+            w_char = p_number.ToString().ToCharArray();
+
+            for (w_ix = 0; w_ix < w_char.Length; w_ix++)
+            {
+                w_mod = w_ix % 2;
+                if (w_mod == 0)
+                {
+                    w_weight = 1;
+                }
+                else
+                {
+                    w_weight = 2;
+                }
+
+                if (!int.TryParse(w_char[w_ix].ToString(), out w_int))
+                {
+                    throw new InvalidOperationException("asplode");
+                }
+
+                w_int *= w_weight;
+
+                if (w_int > 9)
+                {
+                    w_int2 = w_int % 10;
+                    w_int = Convert.ToInt32((w_int - w_int2) / 10);
+                    w_int = w_int + w_int2;
+                }
+
+                w_total = w_total + w_int;
+
+            }
+
+            w_mod = w_total % 10;
+
+            if (w_mod == 0)
+            {
+                functionReturnValue = 0;
+            }
+            else
+            {
+                functionReturnValue = 10 - w_mod;
+            }
+            return functionReturnValue;
+        }
+    }
+}
